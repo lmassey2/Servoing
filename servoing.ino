@@ -22,13 +22,7 @@ volatile float angle_delta = 0;
 volatile int cur_dir = 2;
 
 
-//data structure for speed and direction of motor
-struct Velocity {
-  int spd, dir;
-};
-
 void setup() {
-  // put your setup code here, to run once:
   pinMode(APIN, OUTPUT);
   pinMode(BPIN, OUTPUT);
   pinMode(IRPIN_0, INPUT);
@@ -39,8 +33,6 @@ void setup() {
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-  //int tick = millis();
   
   if (Serial1.available() > 0){  //check if data is received from serial
     String curString = Serial1.readString(); //data is a string
@@ -57,6 +49,7 @@ void loop() {
   
   angle_delta = des_angle - cur_angle;
 
+  //may cause the motor to continuously change directions around the desired angle
   if (0==angle_delta){
     setMotor(STOP_MOTOR);
     ir_cnt = 0;
@@ -67,13 +60,7 @@ void loop() {
   else if (0 > angle_delta){
     setMotor(CCW_MOTOR);
   }
-
-  /*int tock = millis();
-  while(TC > (tock-tick)){
-    tock = millis();
-  }*/
 }
-
 
 
 //sets motor speed/direction
